@@ -86,15 +86,12 @@ public class AStarSearchEngine extends AbstractSearchEngine {
      * @param current  The current node in the path.
      */
     private void reconstructPath(Map<Case, Case> cameFrom, Case current) {
-        List<Case> totalPath = new ArrayList<>();
-        totalPath.add(current);
-
+        path.add(current);
         while (cameFrom.containsKey(current)) {
             current = cameFrom.get(current);
-            totalPath.add(current);
+            path.add(current);
         }
-
-        Collections.reverse(totalPath);
-        path = totalPath;
+        path.add(this.startCase);
+        Collections.reverse(path);
     }
 }

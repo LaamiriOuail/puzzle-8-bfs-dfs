@@ -1,9 +1,6 @@
 package puzzle8;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * The BreadthFirstSearchEngine class extends AbstractSearchEngine and implements the Breadth-First Search algorithm.
@@ -47,5 +44,28 @@ public class BreadthFirstSearchEngine extends AbstractSearchEngine {
             }
             maxDepth++;
         }
+    }
+
+
+
+    @Override
+    public void displayResult() {
+
+            List<Case> newPath=new ArrayList<Case>();
+            newPath.add(this.path.get(path.size()-1));
+            int parentId=newPath.get(0).getParentId();
+            while(parentId!=0){
+                for (var cas:path) {
+                    if(cas.getId()==parentId){
+                        newPath.add(cas);
+                        parentId=cas.getParentId();
+                        break;
+                    }
+                }
+            }
+            path=new ArrayList<Case>(newPath);
+            newPath=null;
+        Collections.reverse(path);
+        super.displayResult();
     }
 }

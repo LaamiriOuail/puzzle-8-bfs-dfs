@@ -1,4 +1,4 @@
-package puzzle8;
+import puzzle8.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,7 +6,9 @@ public class Main {
         State targetState  = new State(new int[][]{{0,1,2},{3,4,5},{6,7,8}});
         Case initialNode = new Case(initialState);
         Case targetNode = new Case(targetState);
-        AbstractSearchEngine searchEngine=new AStarSearchEngine(initialNode,targetNode);
+        //AbstractSearchEngine searchEngine=new AStarSearchEngine(initialNode,targetNode);
+        AbstractSearchEngine searchEngine=new BreadthFirstSearchEngine(initialNode,targetNode);
+        //AbstractSearchEngine searchEngine=new DepthFirstSearchEngine(initialNode,targetNode);
         searchEngine.displayResult();
     }
 }

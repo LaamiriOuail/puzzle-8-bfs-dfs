@@ -45,7 +45,7 @@ public class Case {
      * @return The ID of the case.
      */
     public int getId() {
-        return Id;
+        return this.id;
     }
 
     /**
@@ -54,7 +54,7 @@ public class Case {
      * @param id The new ID for the case.
      */
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     /**

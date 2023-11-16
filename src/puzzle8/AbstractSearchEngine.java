@@ -50,7 +50,7 @@ public abstract class AbstractSearchEngine {
         maxDepth = 0;
         startCase = puzzle8.getRootNode();
         goalCase = puzzle8.getTargetNode();
-        path.add(startCase);
+        //path.add(startCase);
     }
 
     /**
@@ -65,7 +65,7 @@ public abstract class AbstractSearchEngine {
     /**
      * Displays the result of the search, printing the path if found.
      */
-    protected void displayResult() {
+    public void displayResult() {
         if (path.isEmpty()) {
             System.out.println("Path is Empty");
         } else {
