@@ -36,7 +36,7 @@ public class State {
         return true; // Puzzle is valid
     }
 
-    private int[][] getData() {
+    public int[][] getData() {
         return data;
     }
     private Position getVideCaePosition(){//Ok

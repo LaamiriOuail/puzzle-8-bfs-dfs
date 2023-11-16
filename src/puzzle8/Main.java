@@ -11,7 +11,7 @@ public class Main {
         State targetState  = new State(new int[][]{{0,1,2},{3,4,5},{6,7,8}});
         Case initialNode = new Case(initialState);
         Case targetNode = new Case(targetState);
-        DepthFirstSearchEngine dfs=new DepthFirstSearchEngine(initialNode,targetNode);
-        dfs.displayResult();
+        AbstractSearchEngine searchEngine=new AStarSearchEngine(initialNode,targetNode);
+        searchEngine.displayResult();
     }
 }
