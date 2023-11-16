@@ -5,38 +5,58 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * The Puzzle8 class represents the 8-puzzle problem and provides methods for solving it.
+ */
 public class Puzzle8 {
     private Case rootNode;
     private Case targetNode;
 
+    /**
+     * Constructs a Puzzle8 instance with the specified root and target nodes.
+     *
+     * @param rootNode   The initial state of the puzzle.
+     * @param targetNode The target state of the puzzle.
+     */
     public Puzzle8(Case rootNode, Case targetNode) {
         this.rootNode = rootNode;
         this.targetNode = targetNode;
     }
-    //getSpaceState
-    public List<Case> getSpaceState(){
-        List<Case> nodes=new ArrayList<Case>();
-        List<Case> currentNodes=null;
-        List<Case> temporelNodes=null;
+
+    /**
+     * Retrieves the space state by generating possible states using BFS until the target state is reached.
+     *
+     * @return A list of all states encountered during the BFS traversal.
+     */
+    public List<Case> getSpaceState() {
+        List<Case> nodes = new ArrayList<>();
+        List<Case> currentNodes = null;
+        List<Case> temporelNodes = null;
         List<State> states = new ArrayList<>();
         nodes.add(rootNode);
         states.add(rootNode.getState());
-        if(!rootNode.equals(targetNode)){
-            boolean targetExist=false;
-            while(!targetExist){
-                currentNodes=new ArrayList<Case>(nodes);
-                for (Case node:currentNodes) {
-                    if(!node.isChildrenExtrait()){
-                        temporelNodes=node.getChildNodes(states);//Probleme here
-                        if(temporelNodes!=null){
+
+        if (!rootNode.equals(targetNode)) {
+            boolean targetExist = false;
+
+            while (!targetExist) {
+                currentNodes = new ArrayList<>(nodes);
+
+                for (Case node : currentNodes) {
+                    if (!node.isChildrenExtrait()) {
+                        temporelNodes = node.getChildNodes(states);
+
+                        if (temporelNodes != null) {
                             nodes.addAll(temporelNodes);
-                            for (Case nodei:nodes) {
-                                if(nodei.equals(targetNode)){
-                                    targetExist=true;
+
+                            for (Case nodei : nodes) {
+                                if (nodei.equals(targetNode)) {
+                                    targetExist = true;
                                     break;
                                 }
                             }
-                            if(targetExist){
+
+                            if (targetExist) {
                                 break;
                             }
                         }
@@ -47,13 +67,29 @@ public class Puzzle8 {
         return nodes;
     }
 
+    /**
+     * Retrieves the root node of the puzzle.
+     *
+     * @return The root node of the puzzle.
+     */
     public Case getRootNode() {
         return rootNode;
     }
 
+    /**
+     * Retrieves the target node of the puzzle.
+     *
+     * @return The target node of the puzzle.
+     */
     public Case getTargetNode() {
         return targetNode;
     }
+
+    /**
+     * Finds the path from the root node to the target node using Breadth-First Search.
+     *
+     * @return The list of nodes representing the path from the root to the target.
+     */
     public List<Case> findPathBFS() {
         Queue<Case> queue = new LinkedList<>();
         List<Case> visited = new ArrayList<>();

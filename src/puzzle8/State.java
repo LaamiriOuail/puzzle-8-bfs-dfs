@@ -4,9 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The State class represents the state of the 8-puzzle game.
+ */
 public class State {
-    private int[][] data=null;
+    private int[][] data = null;
 
+    /**
+     * Constructs a new State object with the specified puzzle data.
+     *
+     * @param data The puzzle data, a 3x3 array of integers.
+     * @throws IllegalArgumentException if the puzzle data is invalid.
+     */
     public State(int[][] data) {
         if (isValidPuzzle(data)) {
             this.data = data;
@@ -15,7 +24,12 @@ public class State {
         }
     }
 
-    // Method to check if the puzzle data is valid
+    /**
+     * Checks if the given puzzle data is valid for an 8-puzzle.
+     *
+     * @param data The puzzle data to be validated.
+     * @return True if the puzzle data is valid, false otherwise.
+     */
     private boolean isValidPuzzle(int[][] data) {
         if (data.length != 3 || data[0].length != 3) {
             return false; // The puzzle should be 3x3
@@ -36,11 +50,22 @@ public class State {
         return true; // Puzzle is valid
     }
 
+    /**
+     * Gets the puzzle data.
+     *
+     * @return The puzzle data.
+     */
     public int[][] getData() {
         return data;
     }
-    private Position getVideCaePosition(){//Ok
-        Position position=new Position(-1,-1);
+
+    /**
+     * Gets the position of the empty cell in the puzzle.
+     *
+     * @return The position of the empty cell.
+     */
+    private Position getEmptyCellPosition() {
+        Position position = new Position(-1, -1);
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
                 if (data[x][y] == 0) {
@@ -53,31 +78,43 @@ public class State {
         // If 0 is not found, return an invalid position, e.g., (-1, -1)
         return position;
     }
-    private List<Position> getPossibleMovePosition(){//OK
-        List<Position> possibleMovePositions=new ArrayList<Position>();
-        Position videCasePosition=getVideCaePosition();
-        Position temporelPosition;
-        if(videCasePosition.isValid()){
-            temporelPosition=new Position(videCasePosition.getX() -1,videCasePosition.getY());//Left Move
-            if(temporelPosition.isValid()) possibleMovePositions.add(temporelPosition);
-            temporelPosition=new Position(videCasePosition.getX() +1,videCasePosition.getY());//Right Move
-            if(temporelPosition.isValid()) possibleMovePositions.add(temporelPosition);
-            temporelPosition=new Position(videCasePosition.getX() ,videCasePosition.getY() -1);//Buttom Move
-            if(temporelPosition.isValid()) possibleMovePositions.add(temporelPosition);
-            temporelPosition=new Position(videCasePosition.getX(),videCasePosition.getY() +1);//Top Move
-            if(temporelPosition.isValid()) possibleMovePositions.add(temporelPosition);
+
+    /**
+     * Gets a list of possible positions for the empty cell to move.
+     *
+     * @return A list of possible move positions.
+     */
+    private List<Position> getPossibleMovePositions() {
+        List<Position> possibleMovePositions = new ArrayList<>();
+        Position emptyCellPosition = getEmptyCellPosition();
+        Position tempPosition;
+        if (emptyCellPosition.isValid()) {
+            tempPosition = new Position(emptyCellPosition.getX() - 1, emptyCellPosition.getY()); // Left Move
+            if (tempPosition.isValid()) possibleMovePositions.add(tempPosition);
+            tempPosition = new Position(emptyCellPosition.getX() + 1, emptyCellPosition.getY()); // Right Move
+            if (tempPosition.isValid()) possibleMovePositions.add(tempPosition);
+            tempPosition = new Position(emptyCellPosition.getX(), emptyCellPosition.getY() - 1); // Bottom Move
+            if (tempPosition.isValid()) possibleMovePositions.add(tempPosition);
+            tempPosition = new Position(emptyCellPosition.getX(), emptyCellPosition.getY() + 1); // Top Move
+            if (tempPosition.isValid()) possibleMovePositions.add(tempPosition);
         }
         return possibleMovePositions;
     }
 
+    /**
+     * Checks if this state is equal to another object.
+     *
+     * @param o The object to compare with.
+     * @return True if the objects are equal, false otherwise.
+     */
     @Override
-    public boolean equals(Object o) {//Ok
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++){
-                if (this.data[i][j]!=state.data[i][j]) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (this.data[i][j] != state.data[i][j]) {
                     return false;
                 }
             }
@@ -85,52 +122,78 @@ public class State {
         return true;
     }
 
+    /**
+     * Generates a hash code for the state.
+     *
+     * @return The hash code for the state.
+     */
     @Override
     public int hashCode() {
         return Arrays.hashCode(data);
     }
 
-    public boolean existIn(List<State> states){//Ok
-        for (State state:states) {
-            if(this.equals(state)){
+    /**
+     * Checks if this state exists in a list of states.
+     *
+     * @param states The list of states to check against.
+     * @return True if the state exists in the list, false otherwise.
+     */
+    public boolean existsIn(List<State> states) {
+        for (State state : states) {
+            if (this.equals(state)) {
                 return true;
             }
         }
         return false;
     }
-    private State getStateByMove(Position position){//Ok
-        State newState=null;
-        Position videCasePosition=getVideCaePosition();
-        if(position.isValid() && !position.equals(videCasePosition)&& isValidPuzzle(this.data)){
-            int[][] tomporelData=new int[3][3];
+
+    /**
+     * Generates a new state by moving the empty cell to a specified position.
+     *
+     * @param position The position to move the empty cell to.
+     * @return The new state after the move.
+     */
+    private State getStateByMove(Position position) {
+        State newState = null;
+        Position emptyCellPosition = getEmptyCellPosition();
+        if (position.isValid() && !position.equals(emptyCellPosition) && isValidPuzzle(this.data)) {
+            int[][] tempData = new int[3][3];
             for (int i = 0; i < data.length; i++) {
-                for (int j = 0; j < data[i].length; j++) {
-                    tomporelData[i][j] = data[i][j];
-                }
+                System.arraycopy(data[i], 0, tempData[i], 0, data[i].length);
             }
-            tomporelData[videCasePosition.getX()][videCasePosition.getY()]=tomporelData[position.getX()][position.getY()];
-            tomporelData[position.getX()][position.getY()]=0;
-            newState=new State(tomporelData);
+            tempData[emptyCellPosition.getX()][emptyCellPosition.getY()] = tempData[position.getX()][position.getY()];
+            tempData[position.getX()][position.getY()] = 0;
+            newState = new State(tempData);
         }
         return newState;
     }
-    public List<State> getChildStates(List<State> existStates){//Ok
-        List<State> childStates=new ArrayList<State>();
-        List<Position> possibleMovePositions=new ArrayList<Position>(getPossibleMovePosition());
-        State tomporelState=null;
-        for (Position position:possibleMovePositions) {
-            tomporelState=getStateByMove(position);
-            if(tomporelState!=null && !tomporelState.existIn(existStates)){
-                childStates.add(tomporelState);
+
+    /**
+     * Generates a list of child states reachable from the current state.
+     *
+     * @param existingStates The list of existing states to avoid duplicates.
+     * @return The list of child states.
+     */
+    public List<State> getChildStates(List<State> existingStates) {
+        List<State> childStates = new ArrayList<>();
+        List<Position> possibleMovePositions = new ArrayList<>(getPossibleMovePositions());
+        State tempState;
+        for (Position position : possibleMovePositions) {
+            tempState = getStateByMove(position);
+            if (tempState != null && !tempState.existsIn(existingStates)) {
+                childStates.add(tempState);
             }
         }
-        if(!childStates.isEmpty()){
-            existStates.addAll(childStates);
+        if (!childStates.isEmpty()) {
+            existingStates.addAll(childStates);
         }
         return childStates;
     }
 
-    public void printState(){
+    /**
+     * Prints the current state to the console.
+     */
+    public void printState() {
         for (int i = 0; i < 3; i++) {
             // Loop through the columns within each row
             for (int j = 0; j < 3; j++) {
@@ -140,4 +203,3 @@ public class State {
         }
     }
 }
-

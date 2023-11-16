@@ -2,14 +2,25 @@ package puzzle8;
 
 import java.util.*;
 
+/**
+ * The AStarSearchEngine class extends AbstractSearchEngine and implements the A* search algorithm.
+ */
 public class AStarSearchEngine extends AbstractSearchEngine {
 
+    /**
+     * Constructs an AStarSearchEngine with the initial and target nodes for the puzzle.
+     *
+     * @param initialNode The initial state of the puzzle.
+     * @param targetNode  The target state of the puzzle.
+     */
     public AStarSearchEngine(Case initialNode, Case targetNode) {
         super(initialNode, targetNode);
         doAStar();
     }
 
-
+    /**
+     * Performs the A* search algorithm to find the path from the initial state to the target state.
+     */
     public void doAStar() {
         PriorityQueue<Case> openSet = new PriorityQueue<>(Comparator.comparingInt(this::calculateCost));
         openSet.add(startCase);
@@ -46,6 +57,12 @@ public class AStarSearchEngine extends AbstractSearchEngine {
         System.out.println("No path found.");
     }
 
+    /**
+     * Calculates the cost (heuristic) of reaching the goal state from a given node.
+     *
+     * @param node The node for which the cost is calculated.
+     * @return The cost (heuristic) of reaching the goal state.
+     */
     private int calculateCost(Case node) {
         int cost = 0;
         int[][] currentState = node.getState().getData();
@@ -62,7 +79,12 @@ public class AStarSearchEngine extends AbstractSearchEngine {
         return cost;
     }
 
-
+    /**
+     * Reconstructs the path from the start node to the current node using the cameFrom map.
+     *
+     * @param cameFrom The map that stores the relationships between nodes.
+     * @param current  The current node in the path.
+     */
     private void reconstructPath(Map<Case, Case> cameFrom, Case current) {
         List<Case> totalPath = new ArrayList<>();
         totalPath.add(current);
